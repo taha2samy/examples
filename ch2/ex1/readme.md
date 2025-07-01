@@ -1,0 +1,1 @@
+![aws_basic_ec2_architecture](/home/Taha/myfiles/terraform/examples/ch2/ex1/aws_basic_ec2_architecture.png)
