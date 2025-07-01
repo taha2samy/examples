@@ -3,6 +3,12 @@ variable "region" {
     default     = "eu-west-1"
     type        = string
 }
+variable "server_port" {
+    description = "The port on which the server will run"
+    default     = 80
+    type        = number
+  
+}
 provider "aws" {
   
   region = var.region
@@ -35,6 +41,7 @@ resource "aws_vpc" "home" {
   enable_dns_support = true
   enable_dns_hostnames = true
 }
+
 resource "aws_subnet" "my_subnet" {
   vpc_id            = aws_vpc.home.id
   cidr_block        = "10.0.1.0/24"
@@ -80,7 +87,11 @@ resource "aws_launch_template" "ec2_launch_template" {
   image_id      = data.aws_ami.ami_latest.id
   instance_type = "t2.micro"
   key_name      = aws_key_pair.ec2_key_pair.key_name
-
+  user_data = <<-EOF
+#!/bin/bash
+echo "Hello, World" > index.xhtml
+nohup busybox httpd -f -p ${var.server_port} &
+EOF
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
     lifecycle {
     create_before_destroy = true
@@ -128,7 +139,3 @@ resource "aws_route_table_association" "public_subnet_association" {
   route_table_id = aws_route_table.public_route_table.id
 }
 
-output "ip" {
-  
-  value = aws_autoscaling_group.auto_scaling_group_terraform.id
-}
