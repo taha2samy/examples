@@ -225,11 +225,7 @@ resource "aws_lb" "load_balancer" {
     Name = "my-load-balancer"
   }
 
-  depends_on = [
-    aws_internet_gateway.main,
-    aws_route_table_association.public_a,
-    aws_route_table_association.public_b
-  ]
+
 }
 
 resource "aws_lb_listener" "listeners" {
@@ -251,7 +247,7 @@ resource "aws_lb_target_group" "target_group" {
   port     = var.server_port
   protocol = "HTTP"
   vpc_id   = aws_vpc.main.id
-
+  
   health_check {
     path                = "/"
     interval            = 30
