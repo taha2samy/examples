@@ -185,7 +185,6 @@ systemctl enable httpd
 echo "<h1>Hello from Terraform and Auto Scaling Group!</h1>" > /var/www/html/index.html
 EOF
 )
-
   lifecycle {
     create_before_destroy = true
   }
