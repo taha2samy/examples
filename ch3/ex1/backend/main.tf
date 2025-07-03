@@ -14,11 +14,7 @@ provider "aws" {
   region = var.region
 }
 
-resource "random_string" "random" {
-  length  = 8
-  special = false
-  upper   = false
-}
+
 
 resource "aws_s3_bucket" "backend_bucket" {
   bucket = "my-terraform-backend-bucket-${var.region}"
@@ -70,7 +66,6 @@ resource "local_file" "backend_config" {
 bucket = "${aws_s3_bucket.backend_bucket.bucket}"
 region = "${var.region}"
 encrypt= true
-
 dynamodb_table = "${aws_dynamodb_table.terraform_locks.name}"
 EOF
   
